@@ -1,0 +1,120 @@
+[
+    {
+        "users": {
+            "1": {
+                "id": 1,
+                "name": "Robert",
+                "userId": "rjohn",
+                "password": "password",
+                "level1": {
+                    "topTime": "00:00:45",
+                    "topScore": 2,
+                    "lowDeath": 0,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level2": {
+                    "topTime": "00:00:30",
+                    "topScore": 5,
+                    "lowDeath": 2,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level3": {
+                    "topTime": "0:41",
+                    "topScore": 5,
+                    "lowDeath": 5,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                }
+            },
+            "2": {
+                "id": 3,
+                "name": "Jonesie",
+                "userId": "jstarr",
+                "password": "password",
+                "level1": {
+                    "topTime": "00:00:25",
+                    "topScore": 5,
+                    "lowDeath": 3,
+                    "rank": 1,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level2": {
+                    "topTime": "00:00:36",
+                    "topScore": 2,
+                    "lowDeath": 2,
+                    "rank": 3,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level3": {
+                    "topTime": "00:01:00",
+                    "topScore": 2,
+                    "lowDeath": 6,
+                    "rank": 3,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                }
+            },
+            "3": {
+                "id": 2,
+                "name": "Allen",
+                "userId": "alsmit",
+                "password": "password",
+                "level1": {
+                    "topTime": "0:38",
+                    "topScore": 4,
+                    "lowDeath": 1,
+                    "rank": 2,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level2": {
+                    "topTime": "00:00:33",
+                    "topScore": 4,
+                    "lowDeath": 3,
+                    "rank": 2,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                },
+                "level3": {
+                    "topTime": "00:00:41",
+                    "topScore": 5,
+                    "lowDeath": 4,
+                    "rank": 2,
+                    "currentState": {
+                        "time": 0,
+                        "deaths": 0,
+                        "keys": 0
+                    }
+                }
+            }
+        }
+    }
+]

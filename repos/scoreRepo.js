@@ -1,6 +1,6 @@
 let fs = require('fs');
 
-const FILE_NAME = 'assets/userScores.json';
+const FILE_NAME = 'assets/dungeonDiverData.json';
 
 let scoreRepo = {
   get: function (resolve, reject) {
