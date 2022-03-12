@@ -4,7 +4,8 @@ let app = express();
 let scoreRepo = require('./repos/scoreRepo');
 let cors = require('cors');
 
-const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
+// const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
+const baseUrl = "http://localhost:8080"
 
 // Use the express Router object
 let router = express.Router();
@@ -22,7 +23,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // Create GET to return a list of all users
-router.get('/allUsers', function (req, res, next) {
+router.get('/', function (req, res, next) {
   scoreRepo.get(function (data) {
     res.status(200).json({
       "status": 200,
