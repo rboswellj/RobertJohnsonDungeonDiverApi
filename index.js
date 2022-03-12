@@ -4,6 +4,8 @@ let app = express();
 let scoreRepo = require('./repos/scoreRepo');
 let cors = require('cors');
 
+const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
+
 // Use the express Router object
 let router = express.Router();
 
@@ -13,7 +15,7 @@ app.use(express.json());
 // Enable CORS for all requests
 // References: https://expressjs.com/en/resources/middleware/cors.html
 var corsOptions = {
-  "origin": "http://localhost",
+  "origin": baseUrl,
   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
   "optionsSuccessStatus": 204
 };
