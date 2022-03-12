@@ -22,7 +22,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // Create GET to return a list of all users
-router.get('/', function (req, res, next) {
+router.get('/allUsers', function (req, res, next) {
   scoreRepo.get(function (data) {
     res.status(200).json({
       "status": 200,
