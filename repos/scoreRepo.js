@@ -67,7 +67,7 @@ let scoreRepo = {
       }
       else {
         let users = JSON.parse(data);
-        let user = users.find(p => p.UserId == userId);
+        let user = users.find(p => p.userId == userId);
         if (user) {
           Object.assign(user, newData);
           fs.writeFile(FILE_NAME, JSON.stringify(users), function (err) {
