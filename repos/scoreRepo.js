@@ -13,13 +13,13 @@ let scoreRepo = {
       }
     });
   },
-  getById: function (id, resolve, reject) {
+  getById: function (userId, resolve, reject) {
     fs.readFile(FILE_NAME, function (err, data) {
       if (err) {
         reject(err);
       }
       else {
-        let user = JSON.parse(data).find(p => p.id == id);
+        let user = JSON.parse(data).find(p => p.userId == userId);
         resolve(user);
       }
     });
@@ -33,12 +33,11 @@ let scoreRepo = {
         let users = JSON.parse(data);
         // Perform search
         if (searchObject) {
-          users = users.filter(
-            p => (searchObject.id ? p.id == searchObject.id : true) &&
-              (searchObject.name ? p.name.toLowerCase().indexOf(searchObject.name) >= 0 : true));
+          user = users.find(
+            p => (searchObject.userId ? p.userId == searchObject.userId : true));
         }
   
-        resolve(users);
+        resolve(user);
       }
     });
   },
@@ -61,14 +60,14 @@ let scoreRepo = {
       }
     });
   },
-  update: function (newData, id, resolve, reject) {
+  update: function (newData, userId, resolve, reject) {
     fs.readFile(FILE_NAME, function (err, data) {
       if (err) {
         reject(err);
       }
       else {
         let users = JSON.parse(data);
-        let user = users.find(p => p.id == id);
+        let user = users.find(p => p.UserId == userId);
         if (user) {
           Object.assign(user, newData);
           fs.writeFile(FILE_NAME, JSON.stringify(users), function (err) {
@@ -83,14 +82,14 @@ let scoreRepo = {
       }
     });
   },
-  delete: function (id, resolve, reject) {
+  delete: function (userId, resolve, reject) {
     fs.readFile(FILE_NAME, function (err, data) {
       if (err) {
         reject(err);
       }
       else {
         let users = JSON.parse(data);
-        let index = users.findIndex(p => p.id == id);
+        let index = users.findIndex(p => p.userId == userId);
         if (index != -1) {
           users.splice(index, 1);
           fs.writeFile(FILE_NAME, JSON.stringify(users), function (err) {

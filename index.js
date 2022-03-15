@@ -5,25 +5,20 @@ let scoreRepo = require('./repos/scoreRepo');
 let cors = require('cors');
 
 // const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
-const baseUrl = "http://localhost:8080"
 
 // Use the express Router object
+const expressPort = '5000';
 let router = express.Router();
 
-// Configure middleware to support JSON data parsing in request object
+
+// Configure muserIddleware to support JSON data parsing in request object
 app.use(express.json());
 
 // Enable CORS for all requests
-// References: https://expressjs.com/en/resources/middleware/cors.html
-var corsOptions = {
-  "origin": baseUrl,
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "optionsSuccessStatus": 204
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Create GET to return a list of all users
-router.get('/', function (req, res, next) {
+router.get('/users', function (req, res, next) {
   scoreRepo.get(function (data) {
     res.status(200).json({
       "status": 200,
@@ -36,11 +31,12 @@ router.get('/', function (req, res, next) {
   });
 });
 
-// Create GET/search?id=n&name=str to search for users by 'id' and/or 'name'
+// Create GET/search?userId=n&name=str to search for users by 'userId' and/or 'name'
 router.get('/search', function (req, res, next) {
   let searchObject = {
-    "id": req.query.id,
-    "name": req.query.name
+    "userId": req.query.userId,
+    "name": req.query.name,
+    "userId": req.query.userId
   };
   
   scoreRepo.search(searchObject, function (data) {
@@ -53,9 +49,9 @@ router.get('/search', function (req, res, next) {
   });
 });
 
-// Create GET/id to return a single user
-router.get('/:id', function (req, res, next) {
-  scoreRepo.getById(req.params.id, function (data) {
+// Create GET/userId to return a single user
+router.get('/:userId', function (req, res, next) {
+  scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       res.status(200).json({
         "status": 200,
@@ -68,10 +64,10 @@ router.get('/:id', function (req, res, next) {
       res.status(404).send({
         "status": 404,
         "statusText": "Not Found",
-        "message": "The user '" + req.params.id + "' could not be found.",
+        "message": "The user '" + req.params.userId + "' could not be found.",
         "error": {
           "code": "NOT_FOUND",
-          "message": "The user '" + req.params.id + "' could not be found."
+          "message": "The user '" + req.params.userId + "' could not be found."
         }
       });
     }
@@ -93,15 +89,15 @@ router.post('/', function (req, res, next) {
   });
 })
 
-router.put('/:id', function (req, res, next) {
-  scoreRepo.getById(req.params.id, function (data) {
+router.put('/:userId', function (req, res, next) {
+  scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to update the data
-      scoreRepo.update(req.body, req.params.id, function (data) {
+      scoreRepo.update(req.body, req.params.userId, function (data) {
         res.status(200).json({
           "status": 200,
           "statusText": "OK",
-          "message": "user '" + req.params.id + "' updated.",
+          "message": "user '" + req.params.userId + "' updated.",
           "data": data
         });
       });
@@ -110,10 +106,10 @@ router.put('/:id', function (req, res, next) {
       res.status(404).send({
         "status": 404,
         "statusText": "Not Found",
-        "message": "The user '" + req.params.id + "' could not be found.",
+        "message": "The user '" + req.params.userId + "' could not be found.",
         "error": {
           "code": "NOT_FOUND",
-          "message": "The user '" + req.params.id + "' could not be found."
+          "message": "The user '" + req.params.userId + "' could not be found."
         }
       });
     }
@@ -122,16 +118,16 @@ router.put('/:id', function (req, res, next) {
   });
 })
 
-router.delete('/:id', function (req, res, next) {
-  scoreRepo.getById(req.params.id, function (data) {
+router.delete('/:userId', function (req, res, next) {
+  scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to delete the data
-      scoreRepo.delete(req.params.id, function (data) {
+      scoreRepo.delete(req.params.userId, function (data) {
         res.status(200).json({
           "status": 200,
           "statusText": "OK",
-          "message": "The user '" + req.params.id + "' is deleted.",
-          "data": "user '" + req.params.id + "' deleted."
+          "message": "The user '" + req.params.userId + "' is deleted.",
+          "data": "user '" + req.params.userId + "' deleted."
         });
       });
     }
@@ -139,10 +135,10 @@ router.delete('/:id', function (req, res, next) {
       res.status(404).send({
         "status": 404,
         "statusText": "Not Found",
-        "message": "The user '" + req.params.id + "' could not be found.",
+        "message": "The user '" + req.params.userId + "' could not be found.",
         "error": {
           "code": "NOT_FOUND",
-          "message": "The user '" + req.params.id + "' could not be found."
+          "message": "The user '" + req.params.userId + "' could not be found."
         }
       });
     }
@@ -151,15 +147,15 @@ router.delete('/:id', function (req, res, next) {
   });
 })
 
-router.patch('/:id', function (req, res, next) {
-  scoreRepo.getById(req.params.id, function (data) {
+router.patch('/:userId', function (req, res, next) {
+  scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to update the data
-      scoreRepo.update(req.body, req.params.id, function (data) {
+      scoreRepo.update(req.body, req.params.userId, function (data) {
         res.status(200).json({
           "status": 200,
           "statusText": "OK",
-          "message": "user '" + req.params.id + "' patched.",
+          "message": "user '" + req.params.userId + "' patched.",
           "data": data
         });
       });
@@ -168,10 +164,10 @@ router.patch('/:id', function (req, res, next) {
       res.status(404).send({
         "status": 404,
         "statusText": "Not Found",
-        "message": "The user '" + req.params.id + "' could not be found.",
+        "message": "The user '" + req.params.userId + "' could not be found.",
         "error": {
           "code": "NOT_FOUND",
-          "message": "The user '" + req.params.id + "' could not be found."
+          "message": "The user '" + req.params.userId + "' could not be found."
         }
       });
     }
@@ -185,6 +181,6 @@ app.use('/api/', router);
 
 
 // Create server to listen on port 5000
-var server = app.listen(5000, function () {
-    console.log('Node server is running on http://localhost:5000..');
+var server = app.listen(expressPort, function () {
+    console.log(`Node server is running on http://localhost:${expressPort}..`);
 });
