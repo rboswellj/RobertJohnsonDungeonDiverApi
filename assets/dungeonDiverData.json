@@ -1,1 +1,35 @@
-[{"id":1,"name":"Robert","userId":"rjohn","password":"password","highestLevelComplete":"level1","currentState":{"keys":0,"deaths":0},"level1":{"topTime":"11.619","deaths":0},"level2":{"topTime":30,"topScore":5,"lowDeath":2},"level3":{"topTime":25,"topScore":5,"lowDeath":5}},{"id":3,"name":"Jonesie","userId":"jstarr","password":"password","highestLevelComplete":"level1","currentState":{"keys":0,"deaths":0},"level1":{"topTime":"10.343","deaths":0},"level2":{"topTime":36,"topScore":2,"lowDeath":2,"rank":3},"level3":{"topTime":60,"topScore":2,"lowDeath":6,"rank":3}},{"id":2,"name":"Allen","userId":"alsmit","password":"password","highestLevelComplete":"level1","currentState":{"keys":0,"deaths":0},"level1":{"topTime":38,"topScore":4,"lowDeath":1,"rank":2},"level2":{"topTime":33,"topScore":4,"lowDeath":3,"rank":2},"level3":{"topTime":41,"topScore":5,"lowDeath":4,"rank":2}}]
+[
+  {
+    "id": 1,
+    "name": "Robert",
+    "userId": "rjohn",
+    "password": "password",
+    "highestLevelComplete": "level1",
+    "currentState": { "keys": 0, "deaths": 0 },
+    "level1": { "topTime": "10.376", "deaths": 0 },
+    "level2": { "topTime": 30, "topScore": 5, "lowDeath": 2 },
+    "level3": { "topTime": 25, "topScore": 5, "lowDeath": 5 }
+  },
+  {
+    "id": 3,
+    "name": "Jonesie",
+    "userId": "jstarr",
+    "password": "password",
+    "highestLevelComplete": "level1",
+    "currentState": { "keys": 0, "deaths": 0 },
+    "level1": { "topTime": "10.343", "deaths": 0 },
+    "level2": { "topTime": 36, "topScore": 2, "lowDeath": 2, "rank": 3 },
+    "level3": { "topTime": 60, "topScore": 2, "lowDeath": 6, "rank": 3 }
+  },
+  {
+    "id": 2,
+    "name": "Allen",
+    "userId": "alsmit",
+    "password": "password",
+    "highestLevelComplete": "level1",
+    "currentState": { "keys": 0, "deaths": 0 },
+    "level1": { "topTime": "10.025", "deaths": 0 },
+    "level2": { "topTime": 33, "topScore": 4, "lowDeath": 3, "rank": 2 },
+    "level3": { "topTime": 41, "topScore": 5, "lowDeath": 4, "rank": 2 }
+  }
+]
