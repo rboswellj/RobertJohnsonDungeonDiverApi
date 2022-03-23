@@ -3,6 +3,8 @@ let express = require('express');
 let app = express();
 let scoreRepo = require('./repos/scoreRepo');
 let cors = require('cors');
+const { auth, requiresAuth } = require('express-openid-connect');
+
 
 // const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
 
@@ -176,6 +178,28 @@ router.patch('/:userId', function (req, res, next) {
   });
 })
 
+// auth0 routes
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:5000',
+  clientID: 'Jmww1dx4Nq3KWyadImbi6AcKY5VSIiLV',
+  issuerBaseURL: 'https://dev-zj-q20q9.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
+
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
+
 // Configure router so all routes are prefixed with /api/v1
 app.use('/api/', router);
 
@@ -184,3 +208,6 @@ app.use('/api/', router);
 var server = app.listen(expressPort, function () {
     console.log(`Node server is running on http://localhost:${expressPort}..`);
 });
+
+
+
