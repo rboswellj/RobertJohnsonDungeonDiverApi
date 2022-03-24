@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const mongoAtlasUri =
-  "mongodb+srv://rboswellj:Jerkstore7!@cluster0.wwvww.mongodb.net/dungeon-diver.users";
+  `mongodb+srv://${user}:${pass}@cluster0.wwvww.mongodb.net/dungeon-diver.users`;
 
 async function connectDB() {
     try {
