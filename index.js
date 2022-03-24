@@ -3,7 +3,15 @@ let express = require('express');
 let app = express();
 let scoreRepo = require('./repos/scoreRepo');
 let cors = require('cors');
-const { auth, requiresAuth } = require('express-openid-connect');
+const bodyParser = require('body-parser');
+const basicAuth = require('./_helpers/basic_auth');
+const errorHandler = require('./_helpers/error-handler');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+// const { auth, requiresAuth } = require('express-openid-connect');
+// const connectDB = require("./src/db");
+
 
 
 // const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
@@ -11,13 +19,15 @@ const { auth, requiresAuth } = require('express-openid-connect');
 // Use the express Router object
 const expressPort = '5000';
 let router = express.Router();
+let authRoute = express.Router();
 
 
-// Configure muserIddleware to support JSON data parsing in request object
+// Configure user Middleware to support JSON data parsing in request object
 app.use(express.json());
 
 // Enable CORS for all requests
 app.use(cors());
+authRoute.use(cors());
 
 // Create GET to return a list of all users
 router.get('/users', function (req, res, next) {
@@ -52,7 +62,7 @@ router.get('/search', function (req, res, next) {
 });
 
 // Create GET/userId to return a single user
-router.get('/:userId', function (req, res, next) {
+router.get('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       res.status(200).json({
@@ -78,20 +88,20 @@ router.get('/:userId', function (req, res, next) {
   });
 });
 
-router.post('/', function (req, res, next) {
-  scoreRepo.insert(req.body, function(data) {
-    res.status(201).json({
-      "status": 201,
-      "statusText": "Created",
-      "message": "New user Added.",
-      "data": data
-    });
-  }, function(err) {
-    next(err);
-  });
-})
+// router.post('/', function (req, res, next) {
+//   scoreRepo.insert(req.body, function(data) {
+//     res.status(201).json({
+//       "status": 201,
+//       "statusText": "Created",
+//       "message": "New user Added.",
+//       "data": data
+//     });
+//   }, function(err) {
+//     next(err);
+//   });
+// })
 
-router.put('/:userId', function (req, res, next) {
+router.put('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to update the data
@@ -120,7 +130,7 @@ router.put('/:userId', function (req, res, next) {
   });
 })
 
-router.delete('/:userId', function (req, res, next) {
+router.delete('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to delete the data
@@ -149,7 +159,7 @@ router.delete('/:userId', function (req, res, next) {
   });
 })
 
-router.patch('/:userId', function (req, res, next) {
+router.patch('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {
       // Attempt to update the data
@@ -178,36 +188,20 @@ router.patch('/:userId', function (req, res, next) {
   });
 })
 
-// auth0 routes
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: 'a long, randomly-generated string stored in env',
-  baseURL: 'http://localhost:5000',
-  clientID: 'Jmww1dx4Nq3KWyadImbi6AcKY5VSIiLV',
-  issuerBaseURL: 'https://dev-zj-q20q9.us.auth0.com'
-};
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
+// use basic HTTP auth to secure the api
+app.use(basicAuth);
 
-// req.isAuthenticated is provided from the auth router
-app.get('/', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
+// api routes
+app.use('/users', require('./users/users.controller'));
 
-app.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-});
+// global error handler
+app.use(errorHandler);
 
-// Configure router so all routes are prefixed with /api/v1
+// Configure router so all routes are prefixed with /api/
 app.use('/api/', router);
-
 
 // Create server to listen on port 5000
 var server = app.listen(expressPort, function () {
     console.log(`Node server is running on http://localhost:${expressPort}..`);
 });
-
-
-
