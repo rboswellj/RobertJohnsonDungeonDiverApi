@@ -2,19 +2,17 @@
 let express = require('express');
 let app = express();
 let scoreRepo = require('./repos/scoreRepo');
+const auth = require("./src/routes");
 let cors = require('cors');
 const bodyParser = require('body-parser');
-const basicAuth = require('./_helpers/basic_auth');
-const errorHandler = require('./_helpers/error-handler');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// const { auth, requiresAuth } = require('express-openid-connect');
-// const connectDB = require("./src/db");
 
+const connectDB = require("./src/db");
 
+connectDB();
 
-// const baseUrl = "https://arcane-waters-05689.herokuapp.com/";
 
 // Use the express Router object
 const expressPort = '5000';
@@ -186,17 +184,9 @@ router.patch('/user/:userId', function (req, res, next) {
   }, function (err) {
     next(err);
   });
-})
+});
 
-
-// use basic HTTP auth to secure the api
-app.use(basicAuth);
-
-// api routes
-app.use('/users', require('./users/users.controller'));
-
-// global error handler
-app.use(errorHandler);
+app.use("/auth", auth);
 
 // Configure router so all routes are prefixed with /api/
 app.use('/api/', router);
