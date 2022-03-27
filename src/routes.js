@@ -1,9 +1,14 @@
+// Router for express server to the mongo DB for authorization
+
 const express = require("express");
-const { check, validationResult} = require("express-validator");
+let app = express()
+let cors = require('cors');
+const { check, validationResult } = require("express-validator");
+
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const router = express.Router();
+// const router = express.Router();
 
 const User = require("../model/User");
 const auth = require("../middleware/auth");
@@ -14,13 +19,16 @@ const auth = require("../middleware/auth");
  * @description - User SignUp
  */
 
-router.post(
+ app.use(cors({
+    origin: '*'
+}));
+
+
+app.post(
     "/signup",
     [
-        check("username", "Please Enter a Valid Username")
-        .not()
-        .isEmpty(),
-        check("email", "Please enter a valid email").isEmail(),
+        check("userId", "Please Enter a Valid Username").not().isEmpty(),
+        // check("email", "Please enter a valid email").isEmail(),
         check("password", "Please enter a valid password").isLength({
             min: 6
         })
@@ -34,13 +42,14 @@ router.post(
         }
 
         const {
-            username,
-            email,
+            userId,
+            // email,
             password
         } = req.body;
         try {
             let user = await User.findOne({
-                email
+                // email
+                userId
             });
             if (user) {
                 return res.status(400).json({
@@ -49,8 +58,8 @@ router.post(
             }
 
             user = new User({
-                username,
-                email,
+                userId,
+                // email,
                 password
             });
 
@@ -84,10 +93,11 @@ router.post(
     }
 );
 
-router.post(
+app.post(
     "/login",
     [
-      check("email", "Please enter a valid email").isEmail(),
+    //   check("email", "Please enter a valid email").isEmail(),
+      check("userId", "Please enter a valid login"),
       check("password", "Please enter a valid password").isLength({
         min: 6
       })
@@ -101,14 +111,14 @@ router.post(
         });
       }
   
-      const { email, password } = req.body;
+      const { userId, password } = req.body;
       try {
         let user = await User.findOne({
-          email
+            userId
         });
         if (!user)
           return res.status(400).json({
-            message: "User Not Exist"
+            message: "User Does Not Exist"
           });
   
         const isMatch = await bcrypt.compare(password, user.password);
@@ -145,7 +155,7 @@ router.post(
     }
   );
   
-  router.get("/me", auth, async (req, res) => {
+  app.get("/me", auth, async (req, res) => {
     try {
       // request.user is getting fetched from Middleware after token authentication
       const user = await User.findById(req.user.id);
@@ -155,4 +165,4 @@ router.post(
     }
   });
 
-module.exports = router;
+module.exports = app;

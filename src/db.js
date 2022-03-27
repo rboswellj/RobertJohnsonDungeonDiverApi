@@ -1,14 +1,24 @@
 
-const mongoose = require('mongoose');
+// Connection to the MongoDB
 
-const mongoLocal =
-  `mongodb://localhost:27017/dungeon-diver`;
+
+const mongoose = require('mongoose');
+const config = require("./config");
+
+const dbUrl = config.dbUrl;
+var options = {
+  keepAlive: 1,
+  connectTimeoutMS: 30000,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
 
 async function connectDB() {
     try {
         // Connect to the MongoDB cluster
         mongoose.connect(
-          mongoLocal,
+          dbUrl, options, 
           () => console.log(" Mongoose is connected"),
         );
       } catch (e) {
@@ -16,7 +26,5 @@ async function connectDB() {
         console.log(`error: ${e}`)
       }
 }
-
-console.log(`Mongoose Ready: ${mongoose.connection.readyState}`);
 
 module.exports = connectDB

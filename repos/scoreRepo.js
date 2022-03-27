@@ -1,5 +1,7 @@
 let fs = require('fs');
 
+// Repos for JSON server. May at some point want to replace with mongo connection
+
 const FILE_NAME = 'assets/dungeonDiverData.json';
 
 let scoreRepo = {

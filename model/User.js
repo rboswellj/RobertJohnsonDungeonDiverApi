@@ -1,11 +1,9 @@
+// Model for user for Mongo through Mongoose
+
 const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: true
-  },
-  email: {
+  userId: {
     type: String,
     required: true
   },

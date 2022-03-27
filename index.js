@@ -4,10 +4,9 @@ let app = express();
 let scoreRepo = require('./repos/scoreRepo');
 const auth = require("./src/routes");
 let cors = require('cors');
-const bodyParser = require('body-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const connectDB = require("./src/db");
 
@@ -17,7 +16,6 @@ connectDB();
 // Use the express Router object
 const expressPort = '5000';
 let router = express.Router();
-let authRoute = express.Router();
 
 
 // Configure user Middleware to support JSON data parsing in request object
@@ -25,7 +23,14 @@ app.use(express.json());
 
 // Enable CORS for all requests
 app.use(cors());
-authRoute.use(cors());
+
+// Ping the API
+router.get("/ping", (req, res) => {
+  return res.send({
+    error: false,
+    message: "Server is healthy",
+  });
+});
 
 // Create GET to return a list of all users
 router.get('/users', function (req, res, next) {
@@ -85,19 +90,6 @@ router.get('/user/:userId', function (req, res, next) {
     next(err);
   });
 });
-
-// router.post('/', function (req, res, next) {
-//   scoreRepo.insert(req.body, function(data) {
-//     res.status(201).json({
-//       "status": 201,
-//       "statusText": "Created",
-//       "message": "New user Added.",
-//       "data": data
-//     });
-//   }, function(err) {
-//     next(err);
-//   });
-// })
 
 router.put('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {

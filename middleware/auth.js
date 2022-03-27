@@ -1,4 +1,6 @@
 
+// Used to create auth tokens for user authentication
+
 const jwt = require("jsonwebtoken");
 
 module.exports = function(req, res, next) {
