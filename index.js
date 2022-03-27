@@ -46,7 +46,7 @@ router.get('/users', function (req, res, next) {
   });
 });
 
-// Create GET/search?userId=n&name=str to search for users by 'userId' and/or 'name'
+// GET/search?userId=n&name=str to search for users by 'userId' and/or 'name'
 router.get('/search', function (req, res, next) {
   let searchObject = {
     "userId": req.query.userId,
@@ -64,7 +64,7 @@ router.get('/search', function (req, res, next) {
   });
 });
 
-// Create GET/userId to return a single user
+// GET/userId to return a single user
 router.get('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {

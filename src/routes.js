@@ -4,7 +4,8 @@ const express = require("express");
 let app = express()
 let cors = require('cors');
 const { check, validationResult } = require("express-validator");
-
+const jsonFile = 'assets/dungeonDiverData.json';
+const fs = require('fs');
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -43,12 +44,10 @@ app.post(
 
         const {
             userId,
-            // email,
             password
         } = req.body;
         try {
             let user = await User.findOne({
-                // email
                 userId
             });
             if (user) {
@@ -59,9 +58,28 @@ app.post(
 
             user = new User({
                 userId,
-                // email,
                 password
             });
+
+            // try {
+            //     fs.readFile(jsonFile, (err, fileData) => {
+            //         let fileObject = JSON.parse(jsonFile);
+            //         console.log(fileObject);
+            //     });
+
+            // } catch (err) {
+            //     console.error('read file line 65, routes.js');
+            //     console.log(err);
+            // }
+
+            // let jsonData = JSON.stringify(user);
+
+            // try {
+            //     fs.writeFile(jsonFile, jsonData);
+            // } catch(err) {
+            //     console.error('write file line 79, routes.js');
+            //     console.log(err);
+            // }
 
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
