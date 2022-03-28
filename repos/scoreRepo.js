@@ -44,13 +44,19 @@ let scoreRepo = {
     });
   },
   insert: function (newData, resolve, reject) {
-    fs.readFile(FILE_NAME, function (err, data) {
+   fs.readFile(FILE_NAME, function (err, data) {
       if (err) {
         reject(err);
       }
       else {
         let users = JSON.parse(data);
+        // console.log("logging users");
+        // console.log(users);
+        // console.log("new Data:")
         users.push(newData);
+        // console.log(newData);
+        // console.log("updated array");
+        // console.log(users);
         fs.writeFile(FILE_NAME, JSON.stringify(users), function (err) {
           if (err) {
             reject(err);

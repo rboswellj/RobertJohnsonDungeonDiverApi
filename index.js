@@ -91,6 +91,33 @@ router.get('/user/:userId', function (req, res, next) {
   });
 });
 
+// Post new user
+
+router.post('/users/new', function (req, res, next) {
+  scoreRepo.insert(req.body, (data) => {
+    if(data) {
+      res.status(200).json({
+        "status": 200,
+        "statusText": "OK",
+        "message": "user '" + req.body + "' updated.",
+        "data": data
+      });
+    } else {
+      res.status(404).send({
+        "status": 404,
+        "statusText": "Not Found",
+        "message": "The user '" + req.body + "' could not be found.",
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "The user '" + req.body + "' could not be found."
+        }
+      });
+    }
+  }, function(err) {
+    next(err);
+  });
+});
+
 router.put('/user/:userId', function (req, res, next) {
   scoreRepo.getById(req.params.userId, function (data) {
     if (data) {

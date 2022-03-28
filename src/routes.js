@@ -14,22 +14,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/User");
 const auth = require("../middleware/auth");
 
-/**
- * @method - POST
- * @param - /signup
- * @description - User SignUp
- */
-
  app.use(cors({
     origin: '*'
 }));
-
 
 app.post(
     "/signup",
     [
         check("userId", "Please Enter a Valid Username").not().isEmpty(),
-        // check("email", "Please enter a valid email").isEmail(),
         check("password", "Please enter a valid password").isLength({
             min: 6
         })
@@ -60,26 +52,6 @@ app.post(
                 userId,
                 password
             });
-
-            // try {
-            //     fs.readFile(jsonFile, (err, fileData) => {
-            //         let fileObject = JSON.parse(jsonFile);
-            //         console.log(fileObject);
-            //     });
-
-            // } catch (err) {
-            //     console.error('read file line 65, routes.js');
-            //     console.log(err);
-            // }
-
-            // let jsonData = JSON.stringify(user);
-
-            // try {
-            //     fs.writeFile(jsonFile, jsonData);
-            // } catch(err) {
-            //     console.error('write file line 79, routes.js');
-            //     console.log(err);
-            // }
 
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
