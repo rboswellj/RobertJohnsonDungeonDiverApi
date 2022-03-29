@@ -1,28 +1,47 @@
 // Router for express server to the mongo DB for authorization
 
-const express = require("express");
+const express = require('express');
 let app = express()
 let cors = require('cors');
-const { check, validationResult } = require("express-validator");
+const { check, validationResult } = require('express-validator');
 const jsonFile = 'assets/dungeonDiverData.json';
 const fs = require('fs');
 
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+// One day in Milliseconds
+const oneDay = 1000 * 60 * 60 * 24;
+
+const session = require('express-session');
+app.use(session({
+  secret: 'mysecret',
+  saveUninitialized: true,
+  cookie: { maxAge: oneDay },
+  resave: false 
+}));
+let sessionData;
+
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 // const router = express.Router();
 
-const User = require("../model/User");
-const auth = require("../middleware/auth");
+const User = require('../model/User');
+const auth = require('../middleware/auth');
 
+
+// Allow connection from all origins
  app.use(cors({
     origin: '*'
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+
+
+// Request to sign up new user to DB and store password
 app.post(
-    "/signup",
+    '/signup',
     [
-        check("userId", "Please Enter a Valid Username").not().isEmpty(),
-        check("password", "Please enter a valid password").isLength({
+        check('userId', 'Please Enter a Valid Username').not().isEmpty(),
+        check('password', 'Please enter a valid password').isLength({
             min: 6
         })
     ],
@@ -44,7 +63,7 @@ app.post(
             });
             if (user) {
                 return res.status(400).json({
-                    msg: "User Already Exists"
+                    msg: 'User Already Exists'
                 });
             }
 
@@ -66,7 +85,7 @@ app.post(
 
             jwt.sign(
                 payload,
-                "randomString", {
+                'randomString', {
                     expiresIn: 10000
                 },
                 (err, token) => {
@@ -78,17 +97,18 @@ app.post(
             );
         } catch (err) {
             console.log(err.message);
-            res.status(500).send("Error in Saving");
+            res.status(500).send('Error in Saving');
         }
     }
 );
 
+// Signs in user, finds by user ID, sends encrypted password, received token as response
 app.post(
-    "/login",
+    '/login',
     [
-    //   check("email", "Please enter a valid email").isEmail(),
-      check("userId", "Please enter a valid login"),
-      check("password", "Please enter a valid password").isLength({
+    //   check('email', 'Please enter a valid email').isEmail(),
+      check('userId', 'Please enter a valid login'),
+      check('password', 'Please enter a valid password').isLength({
         min: 6
       })
     ],
@@ -108,13 +128,13 @@ app.post(
         });
         if (!user)
           return res.status(400).json({
-            message: "User Does Not Exist"
+            message: 'User Does Not Exist'
           });
   
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
           return res.status(400).json({
-            message: "Incorrect Password !"
+            message: 'Incorrect Password !'
           });
   
         const payload = {
@@ -125,7 +145,7 @@ app.post(
   
         jwt.sign(
           payload,
-          "randomString",
+          'randomString',
           {
             expiresIn: 3600
           },
@@ -136,22 +156,67 @@ app.post(
             });
           }
         );
+
+
       } catch (e) {
         console.error(e);
         res.status(500).json({
-          message: "Server Error"
+          message: 'Server Error'
         });
       }
     }
   );
+
+  // These routes deal with the session, which is used to persist login state
+
+  app.get('/set-session', (req, res) => {
+    try {
+      sessionData = req.session;
+      sessionData.user = {};
+      sessionData.user.userId = req.body.userId;
+      sessionData.user.token = req.body.token;
+
+      res.send(`Session for ${req.body.userId} logged, with token ${req.body.token}`);
+      res.json(session.user);
+    } catch(err) {
+      console.error('logsesh, routes.js line 170');
+      console.error(err);
+    }
+  });
+
+  app.get('/get-session', (req,res) => {
+    try {
+      sessionData = req.session;
+      let userObj = {};
+      if(sessionData.user) {
+        userObj = sessionData.user;
+      }
+      res.json(userObj);
+    } catch(err) {
+      console.error("get-session, routes.js line 192");
+      console.error(err);
+    }
+  })
+
+  app.get('/destroy-session', (req, res) => {
+    try {
+      sessionData = req.session;
+      sessionData.destroy();
+    } catch(err) {
+      console.error("destroy-session, routes.js line 202");
+      console.error(err);
+    }
+  });
   
-  app.get("/me", auth, async (req, res) => {
+
+  // Pulls up user profile information based on token included in the header
+  app.get('/me', auth, async (req, res) => {
     try {
       // request.user is getting fetched from Middleware after token authentication
       const user = await User.findById(req.user.id);
       res.json(user);
     } catch (e) {
-      res.send({ message: "Error in Fetching user" });
+      res.send({ message: 'Error in Fetching user' });
     }
   });
 
