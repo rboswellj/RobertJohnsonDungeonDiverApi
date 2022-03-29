@@ -202,6 +202,7 @@ app.post(
     try {
       sessionData = req.session;
       sessionData.destroy();
+      res.status(200).send("Session destroyed");
     } catch(err) {
       console.error("destroy-session, routes.js line 202");
       console.error(err);
