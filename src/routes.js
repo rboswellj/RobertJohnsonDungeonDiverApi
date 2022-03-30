@@ -154,6 +154,9 @@ app.post(
             res.status(200).json({
               token
             });
+            req.session.userId = userId;
+            req.session.token = token;
+            console.log(session.userId);
           }
         );
 
@@ -173,13 +176,13 @@ app.post(
     try {
       sessionData = req.session;
       sessionData.user = {};
-      sessionData.user.userId = req.body.userId;
-      sessionData.user.token = req.body.token;
+      sessionData.user.userId = req.query.userId;
+      sessionData.user.token = req.query.token;
 
-      res.send(`Session for ${req.body.userId} logged, with token ${req.body.token}`);
+      // res.send(`Session for ${req.query.userId} logged, with token ${req.query.token}`);
       res.json(session.user);
     } catch(err) {
-      console.error('logsesh, routes.js line 170');
+      console.error('set-session, routes.js line 170');
       console.error(err);
     }
   });
@@ -191,6 +194,7 @@ app.post(
       if(sessionData.user) {
         userObj = sessionData.user;
       }
+      // res.send('session retrieved');
       res.json(userObj);
     } catch(err) {
       console.error("get-session, routes.js line 192");

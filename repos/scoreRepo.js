@@ -1,8 +1,9 @@
 let fs = require('fs');
+const config = require('../src/config');
 
 // Repos for JSON server. May at some point want to replace with mongo connection
 
-const FILE_NAME = 'assets/dungeonDiverData.json';
+const FILE_NAME = config.jsonFile;
 
 let scoreRepo = {
   get: function (resolve, reject) {
@@ -50,13 +51,7 @@ let scoreRepo = {
       }
       else {
         let users = JSON.parse(data);
-        // console.log("logging users");
-        // console.log(users);
-        // console.log("new Data:")
         users.push(newData);
-        // console.log(newData);
-        // console.log("updated array");
-        // console.log(users);
         fs.writeFile(FILE_NAME, JSON.stringify(users), function (err) {
           if (err) {
             reject(err);

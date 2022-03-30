@@ -8,7 +8,7 @@ let cors = require('cors');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const connectDB = require("./src/db");
+const connectDB = require("./repos/db");
 
 connectDB();
 
