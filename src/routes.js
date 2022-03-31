@@ -10,7 +10,7 @@ const fs = require('fs');
 // One day in Milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
 
-const session = require('express-session');
+const session = require('cookie-session');
 app.use(session({
   secret: 'mysecret',
   saveUninitialized: true,
@@ -154,9 +154,6 @@ app.post(
             res.status(200).json({
               token
             });
-            req.session.userId = userId;
-            req.session.token = token;
-            console.log(session.userId);
           }
         );
 
