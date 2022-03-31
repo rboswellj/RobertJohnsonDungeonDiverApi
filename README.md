@@ -45,6 +45,28 @@ API http://localhost:5000/
 App http://localhost:8080/
 DB http://localhost:27017
 
+Install Mongo:
+Installation instructions for Mongo DB can be found here:
+https://www.mongodb.com/docs/v5.0/installation/
+
+On mac, if you have homebrew installed you should be able
+to run the terminal command:
+brew install mongodb-community@5.0
+Then when that is complete run:
+mongod --config /usr/local/etc/mongod.conf --fork
+then run:
+mongosh
+It should then give you the connection info for the DB
+If it is running on a url other than mongodb://localhost:27017
+then you will need to open the ./src/config.js file on the api
+and change the URL to the URL for your DB.
+
+You can either install MongoDB Atlas to modify your mongo client and
+add a dungeon-diver database, or you can do this with the mongosh CLI.
+If using the CLI, you should just need to run the command:
+mongosh
+and then the command:
+use dungeon-diver
 
 Project Requirements Met:
     1. Read and pars an external file

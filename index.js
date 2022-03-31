@@ -211,6 +211,6 @@ app.use("/auth", auth);
 app.use('/api/', router);
 
 // Create server to listen on port 5000
-var server = app.listen(expressPort, function () {
+var server = app.listen(process.env.PORT || expressPort, function () {
     console.log(`Node server is running on http://localhost:${expressPort}..`);
 });

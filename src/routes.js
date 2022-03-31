@@ -10,14 +10,14 @@ const fs = require('fs');
 // One day in Milliseconds
 const oneDay = 1000 * 60 * 60 * 24;
 
-const session = require('cookie-session');
-app.use(session({
-  secret: 'mysecret',
-  saveUninitialized: true,
-  cookie: { maxAge: oneDay },
-  resave: false 
-}));
-let sessionData;
+// const session = require('express-session');
+// app.use(session({
+//   secret: 'mysecret',
+//   saveUninitialized: true,
+//   cookie: { maxAge: oneDay },
+//   resave: false 
+// }));
+// let sessionData;
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
